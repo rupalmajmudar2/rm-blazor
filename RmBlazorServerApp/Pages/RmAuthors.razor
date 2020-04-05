@@ -3,7 +3,7 @@
 @inject IJSRuntime jsRuntime
 @inject HttpClient httpClient
 
-<h3>RmAuthors</h3>
+<h3>RmAuthors 0 Curious_Drive</h3>
 <hr />
 
 <div id="rmDivAuthors" class="col-10 alert alert-info"></div>
@@ -45,12 +45,19 @@ Now do the same AGAIN - this time from a Reusable Component :
 
     protected async override Task OnInitializedAsync() {
         string finJson = await FetchFinObjectAsJson();
-        await TestDOMUpdate(finJson);
+        string show = finJson.Substring(0, 40) + "...";
+        await TestDOMUpdate(show);
+        StateHasChanged(); //re-render the page
         await base.OnInitializedAsync();
     }
 
+    //https://www.youtube.com/watch?v=X6cBnOhaYhk
     protected Task<string> FetchFinObjectAsJson() {
-        string url = "https://api.preplanet.bob.ch/bobapplefinancing/get/14388";
+        HttpRequestMessage msg = new HttpRequestMessage();
+        msg.Method = new HttpMethod("GET");
+        msg.RequestUri = new Uri("https://api.preplanet.bob.ch/bobapplefinancing/get/1438");
+        //msg.Content = new StringContent();
+        string url = "http://www.google.com"; // https://api.preplanet.bob.ch/bobapplefinancing/get/14388";
         return httpClient.GetStringAsync(url);
     }
 
