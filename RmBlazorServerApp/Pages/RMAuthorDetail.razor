@@ -1,0 +1,16 @@
+﻿@page "/rmauthors/rmauthordetail/{rmAuthorId:int}"
+@page "/rmauthors/rmauthordetail"
+@page "/jkr"
+    <!--multiple routes possible!-->
+
+<h3>RMAuthorDetail</h3>
+
+<hr />
+<p>Successful Author of Harry Potter AuthorId = @RmAuthorId</p>
+@code {
+
+    [Parameter]
+    public int RmAuthorId {
+        get; set;
+    }
+}

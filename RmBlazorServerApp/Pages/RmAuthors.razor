@@ -1,0 +1,14 @@
+﻿@page  "/rmauthors"
+@inject NavigationManager navMgr
+
+<h3>RmAuthors</h3>
+<hr />
+
+<a href="rmauthors/rmauthordetail/12">J.K.Rowling</a>
+<br />
+<button class="btn btn-primary" @onclick="Navigate">JKRowling</button>
+@code {
+    private void Navigate() {
+        navMgr.NavigateTo("rmauthors/rmauthordetail/12");
+    }
+}
