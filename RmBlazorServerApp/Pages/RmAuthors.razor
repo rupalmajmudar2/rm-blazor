@@ -1,6 +1,7 @@
 ﻿@page  "/rmauthors"
 @inject NavigationManager navMgr
 @inject IJSRuntime jsRuntime
+@inject HttpClient httpClient
 
 <h3>RmAuthors</h3>
 <hr />
@@ -35,8 +36,23 @@ Now do the same AGAIN - this time from a Reusable Component :
         await jsRuntime.InvokeVoidAsync("RmTestDOMUpdate", "Param1", "Param2");
     }
 
+    private async Task TestDOMUpdate(string p2) {
+        await jsRuntime.InvokeVoidAsync("RmTestDOMUpdate", "", p2);
+    }
+
     public string[] RmCities { get; set; }
     public string RmCitiesText { get; set; }
+
+    protected async override Task OnInitializedAsync() {
+        string finJson = await FetchFinObjectAsJson();
+        await TestDOMUpdate(finJson);
+        await base.OnInitializedAsync();
+    }
+
+    protected Task<string> FetchFinObjectAsJson() {
+        string url = "https://api.preplanet.bob.ch/bobapplefinancing/get/14388";
+        return httpClient.GetStringAsync(url);
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender) {
         if (firstRender && (RmCities == null)) RmCities = await jsRuntime.InvokeAsync<string[]>("GetCities");
