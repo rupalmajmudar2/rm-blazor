@@ -5,17 +5,36 @@
 <h3>RmAuthors</h3>
 <hr />
 
+<div id="rmDivAuthors" class="col-10 alert alert-info"></div>
 <a href="rmauthors/rmauthordetail/12">J.K.Rowling</a>
 <br />
 <button class="btn btn-primary" @onclick="Navigate">JKRowling</button>
 <br />
-<button class="btn btn-primary" @onclick="TestJS">Test JS</button>
-@code {
-    private void Navigate() {
-        navMgr.NavigateTo("rmauthors/rmauthordetail/22");
-    }
+<button class="btn btn-primary" @onclick="TestJSAlert">JS_Alert</button>
+<br />
+<button class="btn btn-primary" @onclick="TestDOMUpdate">Update DOM div</button>
+<p>
+    My Cities: @RmCitiesText</p>
 
-    private async Task TestJS() {
-        await jsRuntime.InvokeVoidAsync("RmTestAlert");
+    @code {
+        private void Navigate() {
+            navMgr.NavigateTo("rmauthors/rmauthordetail/22");
+        }
+
+        private async Task TestJSAlert() {
+            await jsRuntime.InvokeVoidAsync("RmTestAlert", "Param1", "Param2");
+        }
+
+        private async Task TestDOMUpdate() {
+            await jsRuntime.InvokeVoidAsync("RmTestDOMUpdate", "Param1", "Param2");
+        }
+
+        public string[] RmCities { get; set; }
+        public string RmCitiesText {get;set;}
+
+    protected override async Task OnAfterRenderAsync(bool firstRender) {
+        if (firstRender && (RmCities == null)) RmCities = await jsRuntime.InvokeAsync<string[]>("GetCities");
+        RmCitiesText = String.Join("-", RmCities);
+        Console.WriteLine("Cities = " + RmCitiesText);
     }
-}
+    }
