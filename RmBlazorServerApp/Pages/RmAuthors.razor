@@ -1,5 +1,6 @@
 ﻿@page  "/rmauthors"
 @inject NavigationManager navMgr
+@inject IJSRuntime jsRuntime
 
 <h3>RmAuthors</h3>
 <hr />
@@ -7,8 +8,14 @@
 <a href="rmauthors/rmauthordetail/12">J.K.Rowling</a>
 <br />
 <button class="btn btn-primary" @onclick="Navigate">JKRowling</button>
+<br />
+<button class="btn btn-primary" @onclick="TestJS">Test JS</button>
 @code {
     private void Navigate() {
-        navMgr.NavigateTo("rmauthors/rmauthordetail/12");
+        navMgr.NavigateTo("rmauthors/rmauthordetail/22");
+    }
+
+    private async Task TestJS() {
+        await jsRuntime.InvokeVoidAsync("RmTestAlert");
     }
 }
